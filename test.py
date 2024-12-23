@@ -1,4 +1,4 @@
-from astropy.coordinates import EarthLocation, AltAz, SkyCoord
+from astropy.coordinates import EarthLocation, AltAz, SkyCoord, get_icrs_coordinates
 from astropy.time import Time
 import astropy.units as u
 
@@ -29,7 +29,22 @@ def get_object_alt_az(ra, dec, observer_location, time):
         "azimuth": altaz.az.deg   # Azimuth in degrees
     }
 
-# Example celestial object: Sirius (RA: 101.287, Dec: -16.716)
+def get_ra_dec(object_name):
+    """
+    Retrieve the Right Ascension (RA) and Declination (Dec) of a celestial object by its name.
+
+    :param object_name: Name of the celestial object (string)
+    :return: A dictionary with RA and Dec values in degrees
+    """
+    # Query the coordinates of the object using its name
+    coordinates = SkyCoord.from_name(object_name)
+
+    return {
+        "ra": coordinates.ra.deg,  # Right Ascension in degrees
+        "dec": coordinates.dec.deg  # Declination in degrees
+    }
+
+# Example celestial object: Sirius
 ra_sirius = 101.287
 dec_sirius = -16.716
 
@@ -43,3 +58,12 @@ sirius_position = get_object_alt_az(ra_sirius, dec_sirius, nyc_location, current
 print(f"At {current_time}, Sirius is located at:")
 print(f"Altitude: {sirius_position['altitude']:.2f} degrees")
 print(f"Azimuth: {sirius_position['azimuth']:.2f} degrees")
+
+# Example usage of get_ra_dec
+object_name = "Saturn"
+object_coords = get_ra_dec(object_name)
+object_postion = get_object_alt_az(object_coords['ra'], object_coords['dec'], nyc_location, Time.now())
+print(f"at {current_time}, {object_name} is located at:")
+print(f"Altitude: {object_postion['altitude']:.2f} degrees")
+print(f"Azimuth: {object_postion['azimuth']:.2f} degrees")
+
