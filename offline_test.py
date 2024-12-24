@@ -80,13 +80,13 @@ def show_result():
         altitude_from_flat_ground = convert_to_degrees_from_flat_ground(alt)
         
         result_label.config(text=f"At {observation_time.utc_iso()}, {object_name} is located at:\n"
-                                f"Altitude: {altitude_from_flat_ground:.2f}° (from flat ground)\n"
-                                f"Azimuth: {azimuth_from_north:.2f}° (from North)")
+                                f"Altitude: {altitude_from_flat_ground:.4f}° (from flat ground)\n"
+                                f"Azimuth: {azimuth_from_north:.4f}° (from North)")
     except Exception as e:
         result_label.config(text=f"Error: {str(e)}")
 
     # Refresh every second
-    window.after(1000, show_result)
+    window.after(500, show_result)
 
 # Create the GUI window
 window = tk.Tk()
